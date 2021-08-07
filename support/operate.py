@@ -1,7 +1,8 @@
-f = open("./data/test.txt")
+f = open("./data/ModelList.txt")
 line = f.readline()
-while line:
-    num=int(line)
-    print(num)
+ModelNum=int(line)
+for i in range(ModelNum):
     line = f.readline()
+print('New Model Num is '+str(ModelNum))
+print('New Model :'+line)
 f.close()
