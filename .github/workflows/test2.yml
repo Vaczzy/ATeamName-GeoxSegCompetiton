@@ -6,7 +6,5 @@ jobs:
     name: run python
     steps:
       - name: Display the path
-        run: |
-          import os
-          print(os.environ['PATH'])
+        run: ./support/operate.py
         shell: python
