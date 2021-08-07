@@ -1,0 +1,16 @@
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      num:
+        description: 'number'
+        required: true
+        default: '100'
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Hello ${{ github.event.inputs.name }}!"
+
