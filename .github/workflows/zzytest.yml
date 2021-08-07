@@ -1,0 +1,16 @@
+# zzy test
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      num:
+        description: 'just number'
+        required: true
+        default: '100'
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Hello ${{ github.event.inputs.num }}!"
