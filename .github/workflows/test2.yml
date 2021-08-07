@@ -1,0 +1,12 @@
+jobs:
+  example-job:
+    name: Save output
+    steps:
+      - shell: bash
+        run: |
+          expr 1 + 1 > output.log
+      - name: Upload output file
+        uses: actions/upload-artifact@v2
+        with:
+          name: output-log-file
+          path: output.log
