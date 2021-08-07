@@ -1,4 +1,4 @@
-f = open("./data/tets.txt")
+f = open("./data/test.txt")
 line = f.readline()
 while line:
     num=int(line)
