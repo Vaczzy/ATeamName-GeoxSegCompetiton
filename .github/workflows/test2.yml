@@ -10,5 +10,8 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: run python
+        run: |
+          python ./support/operate.py
 # - name: Check out repository
 #         uses: actions/checkout@v2
