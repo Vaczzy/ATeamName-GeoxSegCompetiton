@@ -3,12 +3,10 @@ on: push
 jobs:
   example-job:
     runs-on: ubuntu-latest
-    name: Save output
+    name: run python
     steps:
-      - shell: bash
+      - name: Display the path
         run: |
-          expr 1 + 1 > output.log
-      - name: Upload output file
-        uses: actions/upload-artifact@v2
-        with:
-          name: output.log
+          import os
+          print(os.environ['PATH'])
+        shell: python
