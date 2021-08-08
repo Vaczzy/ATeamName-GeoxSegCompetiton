@@ -16,5 +16,14 @@ jobs:
       - name: run python
         run: |
           python ./support/operate.py
+      - name: commit
+        run: |
+          git add .
+          git commit -m "update" -a
+		
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 # - name: Check out repository
 #         uses: actions/checkout@v2
