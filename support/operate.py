@@ -110,6 +110,7 @@ def GetScore(path, Best):
     """
     在获取完best之后打分
     """
+    modelScore={}
     for folder in os.listdir(path):
         singleModelScore=0
         f = open(path+'/'+folder+'/index.txt')
@@ -145,7 +146,6 @@ def GetScore(path, Best):
             singleModelScore+=1  
         f.close()
 
-        modelScore={}
         modelScore[modelName+','+submitter+','+time]=singleModelScore
     return modelScore
 
