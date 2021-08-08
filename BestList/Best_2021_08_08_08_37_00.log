@@ -1,0 +1,30 @@
+Time: 2021-08-08 08:37:00
+BEST LIST
+* IoU: 
+ background: 99.73   deeplabv3p_lovazloss, zzy, 2021.08.07
+ farmland: 77.36   upernet-swin_transformer, zjn, 2021.08.08
+ city: 52.89   upernet-swin_transformer, zjn, 2021.08.08
+ village: 45.73   upernet-swin_transformer, zjn, 2021.08.08
+ water: 68.41   upernet-swin_transformer, zjn, 2021.08.08
+ forest: 85.53   upernet-swin_transformer, zjn, 2021.08.08
+ grass: 10.95   deeplabv3p_lovazloss, zzy, 2021.08.07
+ road: 39.03   upernet-swin_transformer, zjn, 2021.08.08
+ others: 2.56   upernet-swin_transformer, zjn, 2021.08.08
+* mIoU: 53.41   upernet-swin_transformer, zjn, 2021.08.08
+* Acc: 
+ background: 99.9   deeplabv3p_lovazloss, zzy, 2021.08.07
+ farmland: 87.76   upernet-swin_transformer, zjn, 2021.08.08
+ city: 71.32   upernet-swin_transformer, zjn, 2021.08.08
+ village: 65.97   deeplabv3p_lovazloss, zzy, 2021.08.07
+ water: 81.11   upernet-swin_transformer, zjn, 2021.08.08
+ forest: 94.58   deeplabv3p, zzy, 2021.08.07
+ grass: 35.58   deeplabv3p_lovazloss, zzy, 2021.08.07
+ road: 69.08   deeplabv3p_lovazloss, zzy, 2021.08.07
+ others: 3.6   upernet-swin_transformer, zjn, 2021.08.08
+* mAcc: 62.24   upernet-swin_transformer, zjn, 2021.08.08
+* aAcc: 86.91   upernet-swin_transformer, zjn, 2021.08.08
+----------------------------------------------------
+Full Marks: 21
+deeplabv3p_lovazloss,zzy,2021.08.07:   6
+upernet-swin_transformer,zjn,2021.08.08:   14
+deeplabv3p,zzy,2021.08.07:   1
