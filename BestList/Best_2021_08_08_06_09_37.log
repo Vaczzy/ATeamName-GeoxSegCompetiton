@@ -1,0 +1,25 @@
+Time: 2021-08-08 06:09:37
+BEST LIST
+* IoU: 
+ background: 99.73   deeplabv3p_lovazloss, zzy, 2021.08.07
+ farmland: 76.56   deeplabv3p, zzy, 2021.08.07
+ city: 46.87   deeplabv3p, zzy, 2021.08.07
+ village: 45.72   deeplabv3p_lovazloss, zzy, 2021.08.07
+ water: 67.92   deeplabv3p_lovazloss, zzy, 2021.08.07
+ forest: 85.09   deeplabv3p, zzy, 2021.08.07
+ grass: 10.95   deeplabv3p_lovazloss, zzy, 2021.08.07
+ road: 37.51   deeplabv3p, zzy, 2021.08.07
+ others: 0.13   deeplabv3p, zzy, 2021.08.07
+* mIoU: 52.04   deeplabv3p, zzy, 2021.08.07
+* Acc: 
+ background: 99.9   deeplabv3p_lovazloss, zzy, 2021.08.07
+ farmland: 86.09   deeplabv3p, zzy, 2021.08.07
+ city: 62.35   deeplabv3p, zzy, 2021.08.07
+ village: 65.97   deeplabv3p_lovazloss, zzy, 2021.08.07
+ water: 80.15   deeplabv3p_lovazloss, zzy, 2021.08.07
+ forest: 94.58   deeplabv3p, zzy, 2021.08.07
+ grass: 35.58   deeplabv3p_lovazloss, zzy, 2021.08.07
+ road: 69.08   deeplabv3p_lovazloss, zzy, 2021.08.07
+ others: 0.63   deeplabv3p, zzy, 2021.08.07
+* mAcc: 60.6   deeplabv3p, zzy, 2021.08.07
+* aAcc: 86.34   deeplabv3p, zzy, 2021.08.07
