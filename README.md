@@ -1,5 +1,5 @@
-<img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 # “Who Has the Idea to Name a Team” WHINT-Geoxlab Segmentation Competiton
+<img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 “谁有创意起个队名”队遥感影像语义分割天梯榜
 
 ## 目的
