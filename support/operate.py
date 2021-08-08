@@ -24,6 +24,12 @@ def WriteData(filePath,Best):
             +'   '+Best['best_acc_mark'][i]+'\n')
     f.write('* mAcc: '+str(Best['best_macc'])+'   '+Best['best_macc_mark']+'\n')
     f.write('* aAcc: '+str(Best['best_aacc'])+'   '+Best['best_aacc_mark']+'\n')
+    
+    # 写入模型得分
+    f.write('----------------------------------------------------')
+    f.write('\nFull Marks: 21')
+    for key,value in modelScore.items():
+        f.write('\n'+key+':   '+str(value))
     f.close()
 
 def ReadSelectBest(path):
@@ -100,6 +106,49 @@ def ReadSelectBest(path):
 
     return Best
 
+def GetScore(path, Best):
+    """
+    在获取完best之后打分
+    """
+    for folder in os.listdir(path):
+        singleModelScore=0
+        f = open(path+'/'+folder+'/index.txt')
+        
+        modelName = ((f.readline()).split(':')[1]).split('\n')[0] 
+        submitter = ((f.readline()).split(':')[1]).split('\n')[0] 
+        time = ((f.readline()).split(':')[1]).split('\n')[0]
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        for i in range(9):
+            element=f.readline()
+            IoU = float(element.split('|')[2])
+            if IoU>=Best['best_iou'][i,0]:
+                singleModelScore+=1    
+            Acc = float(element.split('|')[3])
+            if Acc>=Best['best_acc'][i,0]:
+                singleModelScore+=1  
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+
+        element=f.readline()
+        aAcc=float(element.split('|')[1])
+        if aAcc>=Best['best_aacc']:
+            singleModelScore+=1  
+        mIoU=float(element.split('|')[2])
+        if mIoU>=Best['best_miou']:
+            singleModelScore+=1  
+        mAcc=float(element.split('|')[3])
+        if mAcc>=Best['best_macc']:
+            singleModelScore+=1  
+        f.close()
+
+        modelScore={}
+        modelScore[modelName+','+submitter+','+time]=singleModelScore
+    return modelScore
+
 path='./data' # 保存提交结果的路径
 
 time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
@@ -107,4 +156,5 @@ bestFolderName='./BestList/Best_'+time_mark+'.log' # 保存当前最佳结果的
 
 Best=ReadSelectBest(path)
 print(Best)
-# WriteData(bestFolderName,Best)
+ModelScore=GetScore(path, Best)
+WriteData(bestFolderName,Best,ModelScore)
