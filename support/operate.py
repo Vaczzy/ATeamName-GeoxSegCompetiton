@@ -157,4 +157,4 @@ bestFolderName='./BestList/Best_'+time_mark+'.log' # 保存当前最佳结果的
 Best=ReadSelectBest(path)
 print(Best)
 ModelScore=GetScore(path, Best)
-# WriteData(bestFolderName,Best,ModelScore)
+WriteData(bestFolderName,Best,ModelScore)
