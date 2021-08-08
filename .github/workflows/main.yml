@@ -10,6 +10,9 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: install numpy
+        run: |
+          pip install numpy
       - name: run python
         run: |
           python ./support/operate.py
