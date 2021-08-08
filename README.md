@@ -1,4 +1,4 @@
-# ATeamName-GeoxSegCompetiton
+# “Who Has the Idea to Name a Team” WHINT-Geoxlab Segmentation Competiton
 “谁有创意起个队名”队遥感影像语义分割天梯榜
 
 ## 目的
