@@ -107,4 +107,4 @@ bestFolderName='./BestList/Best_'+time_mark+'.log' # 保存当前最佳结果的
 
 Best=ReadSelectBest(path)
 print(Best)
-#WriteData(bestFolderName,Best)
+WriteData(bestFolderName,Best)
