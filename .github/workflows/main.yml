@@ -19,8 +19,7 @@ jobs:
       - name: commit
         run: |
           git add .
-          git commit -m "update" -a
-		
+          git commit -m "update" -a	
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
