@@ -106,5 +106,5 @@ time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
 bestFolderName='${{ github.workspace }}/Best_'+time_mark+'1.log' # 保存当前最佳结果的路径
 
 Best=ReadSelectBest(path)
-print(Bset)
+print(Best)
 WriteData(bestFolderName,Best)
