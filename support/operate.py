@@ -103,7 +103,7 @@ def ReadSelectBest(path):
 path='./data' # 保存提交结果的路径
 
 time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
-bestFolderName='./Best.log' # 保存当前最佳结果的路径
+bestFolderName='.BestList/Best_'+time_mark+'.log' # 保存当前最佳结果的路径
 
 Best=ReadSelectBest(path)
 print(Best)
