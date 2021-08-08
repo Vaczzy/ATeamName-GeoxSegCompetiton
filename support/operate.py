@@ -26,7 +26,6 @@ def WriteData(filePath,Best):
     f.write('* aAcc: '+str(Best['best_aacc'])+'   '+Best['best_aacc_mark']+'\n')
     f.close()
 
-
 def ReadSelectBest(path):
     """
     读取存放在指定位置的提交结果，并寻找最佳结果
@@ -45,7 +44,6 @@ def ReadSelectBest(path):
     best_macc=0
     best_macc_mark=['']
 
-    
     # 检查提交的结果
     for folder in os.listdir(path):
         f = open(path+'/'+folder+'/index.txt')
@@ -86,7 +84,6 @@ def ReadSelectBest(path):
             best_macc_mark=modelName+', '+submitter+', '+time
         f.close()
 
-
     # 字典
     Best={}
     Best['best_iou']=best_iou
@@ -106,7 +103,8 @@ def ReadSelectBest(path):
 path='./data' # 保存提交结果的路径
 
 time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
-bestFolderName='./Best_'+time_mark+'1.log' # 保存当前最佳结果的路径
+bestFolderName='${{ github.workspace }}/Best_'+time_mark+'1.log' # 保存当前最佳结果的路径
 
 Best=ReadSelectBest(path)
+print(Bset)
 WriteData(bestFolderName,Best)
