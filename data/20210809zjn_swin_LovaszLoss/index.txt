@@ -1,5 +1,5 @@
 ModelName:upernet-swin_LovaszLoss
-submitter:zjn
+Submitter:zjn
 Time:2021.08.09
 +------------+-------+-------+
 |   Class    |  IoU  |  Acc  |
