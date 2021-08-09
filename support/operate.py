@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pytz
 import time
  
 classlist=['background','farmland','city','village','water','forest','grass','road','others']
@@ -8,8 +9,10 @@ def WriteData(filePath,Best,modelScore):
     """
     将获取的最佳结果写入log中，最佳结果存储在Best中
     """
-    localtime = time.strftime(r"%Y-%m-%d %H:%M:%S", time.localtime())
-     
+    ts=time.time()
+    tz = pytz.timezone('Asia/Shanghai')
+    dt = pytz.datetime.datetime.fromtimestamp(ts, tz)
+    localtime=dt.strftime('%Y-%m-%d %H:%M:%S'))
     f = open(filePath,'w')
     f.write('Time: '+localtime+'\n')
     f.write('BEST LIST\n')
