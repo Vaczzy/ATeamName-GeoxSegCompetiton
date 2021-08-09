@@ -1,5 +1,5 @@
 ModelName:deeplabv3p_lovazloss
-submitter:zzy
+Submitter:zzy
 Time:2021.08.07
 +------------+-------+-------+
 |   Class    |  IoU  |  Acc  |
