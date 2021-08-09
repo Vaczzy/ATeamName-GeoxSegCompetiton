@@ -2,8 +2,8 @@
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 “谁有创意起个队名”队遥感影像语义分割天梯榜
 
-## 更新：
-更改了之前榜单时区的问题，目前的时区设定为**北京时间（东8区）**
+### 更新
+2021.08.09： 更改了之前榜单时区的问题，目前的时区设定为**北京时间（东8区）**
 
 ## 目的
 **便于迭代优化和结果提交及查看**
