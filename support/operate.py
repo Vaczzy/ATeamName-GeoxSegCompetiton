@@ -12,7 +12,7 @@ def WriteData(filePath,Best,modelScore):
     ts=time.time()
     tz = pytz.timezone('Asia/Shanghai')
     dt = pytz.datetime.datetime.fromtimestamp(ts, tz)
-    localtime=dt.strftime('%Y-%m-%d %H:%M:%S'))
+    localtime=dt.strftime('%Y-%m-%d %H:%M:%S')
     f = open(filePath,'w')
     f.write('Time: '+localtime+'\n')
     f.write('BEST LIST\n')
