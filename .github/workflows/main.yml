@@ -17,9 +17,10 @@ jobs:
           python-version: '3.8'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
-      - name: install numpy
+      - name: install numpy and pytz
         run: |
           pip install numpy
+          pip install pytz
       - name: run python
         run: |
           python ./support/operate.py
