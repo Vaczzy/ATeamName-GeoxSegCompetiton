@@ -1,5 +1,8 @@
 name: Get Best Result
-on: push
+on:
+  push:
+    paths:
+      - 'data/**'
 jobs:
   example-job:
     runs-on: ubuntu-latest
