@@ -1,5 +1,5 @@
 ModelName:upernet-swin_transformer
-submitter:zjn
+Submitter:zjn
 Time:2021.08.08
 +------------+-------+-------+
 |   Class    |  IoU  |  Acc  |
