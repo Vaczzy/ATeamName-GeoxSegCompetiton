@@ -1,4 +1,4 @@
-name: Manually triggered workflow：Visual and Compare
+name: Manually triggered workflow:Visual and Compare
 on:
   workflow_dispatch:
     inputs:
