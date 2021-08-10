@@ -2,19 +2,23 @@ name: Manually triggered workflow
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Person to greet'
+      ModelName:
+        description: 'ModelName in index.txt:'
         required: true
-        default: 'Mona the Octocat'
-      home:
-        description: 'location'
+        default: 'Best'
+      Vistype:
+        description: 'Single or Compare'
         required: false
-        default: 'The Octoverse'
-
+        default: 'Single'
+      CompareModelName:
+        description: 'CompareModelName or Baseline'
+        required: false
+        default: 'deeplabv3p'
 jobs:
-  say_hello:
+  visualresult:
     runs-on: ubuntu-latest
     steps:
+      # 之前在此运行生成比较图的运行脚本即可
       - run: |
-          echo "Hello ${{ github.event.inputs.name }}!"
-          echo "- in ${{ github.event.inputs.home }}!"
+          echo "Hello ${{ github.event.inputs.ModelName }}!"
+          echo "- in ${{ github.event.inputs.Vistype }}!"
