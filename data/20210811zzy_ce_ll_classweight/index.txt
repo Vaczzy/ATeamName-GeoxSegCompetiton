@@ -1,5 +1,5 @@
 ModelName:deeplabv3p_ce_ll_classweight
-submitter:zzy
+Submitter:zzy
 Time:2021.08.12
 +------------+-------+-------+
 |   Class    |  IoU  |  Acc  |
