@@ -9,7 +9,6 @@ on:
 jobs:
   vismiou_jobs:
     runs-on: ubuntu-latest
-    name: check
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
