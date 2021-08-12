@@ -25,9 +25,10 @@
 ## 提交后查看榜单（榜单仅列出最好结果和提交结果分数）
 榜单存储于**BestList**文件夹中，包含历史榜单
 
+## mIOU榜单排名
+<img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 ## 后续功能上线...
 * 训练过程可视化分析
-* 榜单结果可视化 
 
 ```diff
 更新：
