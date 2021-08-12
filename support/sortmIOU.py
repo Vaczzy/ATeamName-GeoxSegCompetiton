@@ -36,6 +36,7 @@ def WriteData(filePath,smIoU):
     localtime=dt.strftime('%Y-%m-%d %H:%M:%S')
     f = open(filePath,'w')
     f.write('Time: '+localtime+'\n')
+    f.write('ModelNum: '+str(len(smIoU))+'\n')
     f.write('*Sort by mIoU: \n')
     for i in range(len(smIoU)):
         f.write(str(i+1)+',  '+smIoU[i][0]+': '+str(smIoU[i][1])+'\n')
