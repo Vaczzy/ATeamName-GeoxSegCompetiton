@@ -18,6 +18,8 @@ time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
 savepath='./visual/mIoUrank_'+time_mark+'.png'
 
 plt.title(title)
-plt.barh(range(len(num_list)), num_list,tick_label = name_list)
-plt.xlim(min(num_list)-10, max(num_list)+1)
+prop_iter = iter(plt.rcParams['axes.prop_cycle'])
+plt.barh(range(len(num_list)), num_list,tick_label = name_list, color=next(prop_iter)['color'])
+plt.xlim(min(num_list)-1, max(num_list)+1)
+plt.tight_layout()
 plt.savefig(savepath)
