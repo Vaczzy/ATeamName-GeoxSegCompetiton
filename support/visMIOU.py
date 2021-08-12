@@ -6,6 +6,7 @@ path='./Rank_mIoU/rank.log'
 f=open(path,'r')
 title='mIoU Rank (Top 5)'+f.readline()
 #ModelNum=int(((f.readline()).split(':')[1]).split('\n')[0])
+line=f.readline()
 ModelNum=5 # top 5
 line=f.readline()
 name_list=[]
