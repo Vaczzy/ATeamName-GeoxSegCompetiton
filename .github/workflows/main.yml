@@ -24,6 +24,7 @@ jobs:
       - name: run python
         run: |
           python ./support/operate.py
+          python ./support/sortmIoU.py
       - name: commit
         run: |
           git config --global user.email 1069166224@qq.com
