@@ -31,9 +31,33 @@ jobs:
           git config --global user.name hizzy
           git add .
           git commit -m "update" -a	
+      - name: Push BestList and Rank_mIoU change
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.8'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: run visual python script
+        run: |
+          pip install matplotlib
+          python python ./support/visMIOU.py
+      - name: commit
+        run: |
+          git config --global user.email 1069166224@qq.com
+          git config --global user.name hizzy
+          git add .
+          git commit -m "update" -a	
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
 # - name: Check out repository
 #         uses: actions/checkout@v2
