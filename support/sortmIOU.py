@@ -28,7 +28,7 @@ def readIOU(path):
 
 def WriteData(filePath,smIoU):
     """
-    将获取的最佳结果写入log中，最佳结果存储在Best中
+    写入数据
     """
     ts=time.time()
     tz = pytz.timezone('Asia/Shanghai')
@@ -38,13 +38,12 @@ def WriteData(filePath,smIoU):
     f.write('Time: '+localtime+'\n')
     f.write('*Sort by mIoU: \n')
     for i in range(len(smIoU)):
-        f.write(str(i)+',  '+smIoU[i][0]+': '+str(smIoU[i][1])+'\n')
+        f.write(str(i+1)+',  '+smIoU[i][0]+': '+str(smIoU[i][1])+'\n')
     f.close()
     
 path='./data'
 filepath='./Rank_mIoU/rank.log'
 mIoU=readIOU(path)
 smIoU=sorted(mIoU.items(), key = lambda kv:(kv[1], kv[0]),reverse=True)
-# 写文件
 WriteData(filepath,smIoU)
 
