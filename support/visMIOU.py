@@ -21,7 +21,7 @@ plt.title(title)
 #prop_iter = iter(plt.rcParams['axes.prop_cycle'])
 plt.barh(range(len(num_list)), num_list,tick_label = name_list)#color=next(prop_iter)['color'])
 for i, v in enumerate(num_list):
-    plt.text(v + 3, i + .25, str(v), color='red')
+    plt.text(v + 0.01, i, str(v), color='red')
 plt.xlim(min(num_list)-1, max(num_list)+1)
 plt.tight_layout()
 plt.savefig(savepath)
