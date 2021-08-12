@@ -13,10 +13,12 @@ for i in range(ModelNum):
     element=f.readline().split(', ')[1]
     name_list.append(element.split(':')[0])
     num_list.append((element.split(':')[1]).split('\n')[0])
+print(name_list)
+print(num_list)
 # darw and save
 time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
 savepath='./visual/mIoUrank_'+time_mark+'.png'
 
 plt.title(title)
-plt.barh(range(ModelNum), num_list,tick_label=name_list)
+plt.barh(range(len(num_list)), num_list,tick_label = name_list)
 plt.savefig(savepath)
