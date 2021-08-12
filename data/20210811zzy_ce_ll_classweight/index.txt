@@ -1,4 +1,4 @@
-ModelName:deeplabv3p_ce_ll_classweight
+ModelName:deeplabv3p_ce_classweight_ll
 Submitter:zzy
 Time:2021.08.12
 +------------+-------+-------+
