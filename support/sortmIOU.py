@@ -45,5 +45,5 @@ filepath='./Rank_mIoU/rank.log'
 mIoU=readIOU(path)
 smIoU=sorted(mIoU.items(), key = lambda kv:(kv[1], kv[0]))
 # 写文件
-WriteData(filePath,smIoU)
+WriteData(filepath,smIoU)
 
