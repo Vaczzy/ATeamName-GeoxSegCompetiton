@@ -1,7 +1,7 @@
 # 按照平均IoU排序
 import numpy as np
 import os
-
+import time
 def readIOU(path):
     mIoU={}
     i=0
