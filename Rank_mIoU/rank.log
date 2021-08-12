@@ -1,4 +1,5 @@
-Time: 2021-08-12 10:53:25
+Time: 2021-08-12 12:13:15
+ModelNum: 5
 *Sort by mIoU: 
 1,  upernet-swin_transformer: 53.41
 2,  deeplabv3p_ce_ll_classweight: 52.5
