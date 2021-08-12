@@ -42,7 +42,7 @@ def WriteData(filePath,smIoU):
     
 path='./data'
 filepath='./Rank_mIoU/rank.log'
-mIoU=readIoU(path)
+mIoU=readIOU(path)
 smIoU=sorted(mIoU.items(), key = lambda kv:(kv[1], kv[0]))
 # 写文件
 WriteData(filePath,smIoU)
