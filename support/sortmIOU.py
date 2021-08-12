@@ -38,7 +38,7 @@ def WriteData(filePath,smIoU):
     f.write('Time: '+localtime+'\n')
     f.write('*Sort by mIoU: \n')
     for i in range(len(smIoU)):
-        f.write(str(i)+',  '+smIoU[i][0]+': '+smIoU[i][1])
+        f.write(str(i)+',  '+smIoU[i][0]+': '+str(smIoU[i][1]))
     f.close()
     
 path='./data'
