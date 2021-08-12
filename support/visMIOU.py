@@ -5,7 +5,7 @@ import time
 path='./Rank_mIoU/rank.log'
 f=open(path,'r')
 title='mIoU Rank '+f.readline()
-ModelNum=int((f.readline()).split(':')[1]).split('\n')[0])
+ModelNum=int(((f.readline()).split(':')[1]).split('\n')[0])
 line=f.readline()
 name_list=[]
 num_list=[]
