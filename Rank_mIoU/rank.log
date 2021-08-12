@@ -1,3 +1,7 @@
-Time: 2021-08-12 10:48:09
+Time: 2021-08-12 10:50:47
 *Sort by mIoU: 
-0,  deeplabv3p_lovazloss: 46.111,  upernet-swin_LovaszLoss: 50.82,  deeplabv3p: 52.043,  deeplabv3p_ce_ll_classweight: 52.54,  upernet-swin_transformer: 53.41
+0,  upernet-swin_transformer: 53.41
+1,  deeplabv3p_ce_ll_classweight: 52.5
+2,  deeplabv3p: 52.04
+3,  upernet-swin_LovaszLoss: 50.8
+4,  deeplabv3p_lovazloss: 46.11
