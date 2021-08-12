@@ -27,6 +27,9 @@
 
 ## mIOU榜单排名
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
+
+
+
 ## 后续功能上线...
 * 训练过程可视化分析
 
