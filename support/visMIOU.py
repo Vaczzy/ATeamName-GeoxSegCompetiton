@@ -19,4 +19,5 @@ savepath='./visual/mIoUrank_'+time_mark+'.png'
 
 plt.title(title)
 plt.barh(range(len(num_list)), num_list,tick_label = name_list)
+plt.xlim(min(num_list-10), max(num_list)+1)
 plt.savefig(savepath)
