@@ -1,8 +1,9 @@
-Time: 2021-08-12 13:50:37
-ModelNum: 5
+Time: 2021-08-15 16:28:08
+ModelNum: 6
 *Sort by mIoU: 
 1,  upernet-swin_transformer: 53.41
 2,  deeplabv3p_ce_ll_classweight: 52.5
-3,  deeplabv3p: 52.04
-4,  upernet-swin_LovaszLoss: 50.8
-5,  deeplabv3p_lovazloss: 46.11
+3,  deeplabv3p_ce_di_classweight: 52.28
+4,  deeplabv3p: 52.04
+5,  upernet-swin_LovaszLoss: 50.8
+6,  deeplabv3p_lovazloss: 46.11
