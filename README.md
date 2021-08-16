@@ -5,7 +5,7 @@
 ### *“谁有创意起个队名”队* 遥感影像语义分割天梯榜
 
 
-## mIOU榜单排名
+## mIoU Top5
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
 
