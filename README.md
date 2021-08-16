@@ -25,7 +25,7 @@
 ## 提交后查看榜单（榜单仅列出最好结果和提交结果分数）
 榜单存储于**BestList**文件夹中，包含历史榜单
 
-## mIOU榜单排名[每日中午更新]
+## mIOU榜单排名[提交后管理员更新]
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
 
