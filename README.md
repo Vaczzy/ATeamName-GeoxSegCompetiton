@@ -39,6 +39,7 @@ Time:2021.08.07 -------------------提交时间
 +-------+-------+------+
 ```
 * 使用**MMSegmentation**框架训练，使用下列设置并提交：
+
 **default_runtime.py**中的**log_config**如下：
 ```
 log_config = dict(
