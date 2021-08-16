@@ -8,7 +8,6 @@
 ## mIoU Top5
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
-将在新结果提交后更新
 
 ## 提交说明和规范
 ##### 提交结果应包含：
