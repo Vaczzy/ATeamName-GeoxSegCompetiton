@@ -1,5 +1,4 @@
-# “Who Has the Idea to Name a Team” 
-# WHINT-Geoxlab Segmentation Competiton
+# “Who Has the Idea to Name a Team” WHINT-Geoxlab Segmentation Competiton
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 
 
