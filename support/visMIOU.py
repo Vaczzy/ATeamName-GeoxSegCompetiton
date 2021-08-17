@@ -1,3 +1,8 @@
+"""
+用于生成mIoU Top5榜单
+Anthor:zzy
+Time:2021.08.17
+"""
 import matplotlib.pyplot as plt
 import time
 
@@ -16,7 +21,7 @@ for i in range(ModelNum):
     name_list.append(element.split(':')[0])
     num_list.append(float((element.split(':')[1]).split('\n')[0]))
     
-# darw and save
+# draw and save
 time_mark=time.strftime(r"%Y_%m_%d_%H_%M_%S", time.localtime())
 savepath='./visual/mIoUrank_'+time_mark+'.png'
 savepath2='./visual/mIoUrank.png'
