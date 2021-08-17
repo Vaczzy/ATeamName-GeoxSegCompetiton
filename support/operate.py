@@ -1,3 +1,8 @@
+"""
+用于生成BestList.log
+Anthor:zzy
+Time:2021.08.17
+"""
 import os
 import numpy as np
 import pytz
