@@ -8,7 +8,7 @@
 ## mIoU Top5
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
-(在[visual](./data)文件夹中查看历史mIoU Top5榜单，在Rank_mIoU文件夹中查看所有的mIoU排序表单)
+(在[visual](./data)文件夹中查看历史mIoU Top5榜单，在[Rank_mIoU](./Rank_mIoU)文件夹中查看所有的mIoU排序表单)
 ## 提交说明和规范
 ### 提交结果应包含：
 * **index.txt**
@@ -60,17 +60,17 @@ log_config = dict(
 
 ### 提交文件组织和提交位置：
 * 提交文件组织：请将上述文件放置在**同一文件夹**中提交，文件夹名称可以不与index.txt中的ModelName相同，但**应体现提交模型的特点**
-* 提交位置：**data**文件夹内
+* 提交位置：[**data**](./data)文件夹内
 
 ### 提交后注意事项
-* 提交结果后几秒内榜单将自动更新最佳榜单，最新的最佳榜单（Best_xxx.log保存在BestList文件夹中）
+* 提交结果后几秒内榜单将自动更新最佳榜单，最新的最佳榜单（Best_xxx.log保存在[BestList](./BestList)文件夹中）
 * 若您的提交结果**超过了当前mIoU Top5**的成员，在检查无误后，主榜单将在几分钟内更新。
 
 ### 技术细节与数据保护
 * 提交结果应采用与本榜其他提交结果一致的**基础**数据集
 * 从数据保护的角度出发，本榜将不公开使用的基础数据集
 * 若要获取数据，请联系管理员
-* **特殊条款：若您的策略处于技术保护阶段，在提交技术保护表单（TecProtectList）的基础上，您可以隐去需要保护的训练设置后上传**
+* **特殊条款：若您的策略处于技术保护阶段，在提交技术保护表单（[TecProtectList](./TecProtectList)）的基础上，您可以隐去需要保护的训练设置后上传**
 
 ## 现阶段功能
 为便于模型的迭代优化和改进，该榜现阶段提供的功能有：
@@ -80,7 +80,7 @@ log_config = dict(
 
 
 ## 榜单查看
-* 21个指标的榜单存储于**BestList**文件夹中，包含历史榜单
+* 21个指标的榜单存储于[BestList](./BestList)文件夹中，包含历史榜单
 * mIoU榜单(主榜)将在您的结果提交后给出（仅展示前5名），该榜单将展示在主页上方
 
 ## TODO List
