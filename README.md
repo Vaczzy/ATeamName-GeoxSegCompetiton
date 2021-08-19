@@ -1,6 +1,6 @@
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/WHINT/whintlogo.PNG" >
 
-## WHINT-Geoxlab Segmentation Competiton *“谁有创意起个队名”队* 遥感影像语义分割天梯榜
+### WHINT-Geoxlab Segmentation Competiton *“谁有创意起个队名”队* 遥感影像语义分割天梯榜
 
 
 ## mIoU Top5
