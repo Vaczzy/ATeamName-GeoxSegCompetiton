@@ -8,7 +8,7 @@
 ## mIoU Top5
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
-(在[visual](./data)文件夹中查看历史mIoU Top5榜单，在[Rank_mIoU](./Rank_mIoU)文件夹中查看所有的mIoU排序表单)
+(在[**visual**](./data)文件夹中查看历史mIoU Top5榜单，在[**Rank_mIoU**](./Rank_mIoU)文件夹中查看所有的mIoU排序表单)
 ## 提交说明和规范
 ### 提交结果应包含：
 * **index.txt**
@@ -63,7 +63,7 @@ log_config = dict(
 * 提交位置：[**data**](./data)文件夹内
 
 ### 提交后注意事项
-* 提交结果后几秒内榜单将自动更新最佳榜单，最新的最佳榜单（Best_xxx.log保存在[BestList](./BestList)文件夹中）
+* 提交结果后几秒内榜单将自动更新最佳榜单，最新的最佳榜单（Best_xxx.log保存在[**BestList**](./BestList)文件夹中）
 * 若您的提交结果**超过了当前mIoU Top5**的成员，在检查无误后，主榜单将在几分钟内更新。
 
 ### 技术细节与数据保护
@@ -80,7 +80,7 @@ log_config = dict(
 
 
 ## 榜单查看
-* 21个指标的榜单存储于[BestList](./BestList)文件夹中，包含历史榜单
+* 21个指标的榜单存储于[**BestList**](./BestList)文件夹中，包含历史榜单
 * mIoU榜单(主榜)将在您的结果提交后给出（仅展示前5名），该榜单将展示在主页上方
 
 ## TODO List
