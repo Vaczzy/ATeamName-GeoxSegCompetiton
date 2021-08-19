@@ -8,7 +8,7 @@
 ## mIoU Top5
 <img src="https://github.com/Vaczzy/ATeamName-GeoxSegCompetiton/raw/main/visual/mIoUrank.png" >
 
-(在visual文件夹中查看历史mIoU Top5榜单，在Rank_mIoU文件夹中查看所有的mIoU排序表单)
+(在[visual](./data)文件夹中查看历史mIoU Top5榜单，在Rank_mIoU文件夹中查看所有的mIoU排序表单)
 ## 提交说明和规范
 ### 提交结果应包含：
 * **index.txt**
