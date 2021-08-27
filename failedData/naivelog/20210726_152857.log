@@ -1,0 +1,761 @@
+2021-07-26 15:28:58,051 - mmseg - INFO - Environment info:
+------------------------------------------------------------
+sys.platform: linux
+Python: 3.7.10 | packaged by conda-forge | (default, Feb 19 2021, 16:07:37) [GCC 9.3.0]
+CUDA available: True
+GPU 0: GeForce GTX TITAN
+CUDA_HOME: None
+GCC: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+PyTorch: 1.9.0
+PyTorch compiling details: PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) oneAPI Math Kernel Library Version 2021.3-Product Build 20210617 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.1.2 (Git Hash 98be7e8afa711dc9b66c8ff3504129cb82013cdb)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.2
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.5
+  - Magma 2.5.2
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=10.2, CUDNN_VERSION=7.6.5, CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.9.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, 
+
+TorchVision: 0.2.2
+OpenCV: 4.5.3
+MMCV: 1.3.10
+MMCV Compiler: GCC 7.3
+MMCV CUDA Compiler: 10.2
+MMSegmentation: 0.15.0+feeac01
+------------------------------------------------------------
+
+2021-07-26 15:28:58,051 - mmseg - INFO - Distributed training: False
+2021-07-26 15:28:58,342 - mmseg - INFO - Config:
+norm_cfg = dict(type='BN', requires_grad=True)
+model = dict(
+    type='EncoderDecoder',
+    pretrained='open-mmlab://resnet50_v1c',
+    backbone=dict(
+        type='ResNetV1c',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        dilations=(1, 1, 2, 4),
+        strides=(1, 2, 1, 1),
+        norm_cfg=dict(type='BN', requires_grad=True),
+        norm_eval=False,
+        style='pytorch',
+        contract_dilation=True),
+    decode_head=dict(
+        type='DepthwiseSeparableASPPHead',
+        in_channels=2048,
+        in_index=3,
+        channels=512,
+        dilations=(1, 12, 24, 36),
+        c1_in_channels=256,
+        c1_channels=48,
+        dropout_ratio=0.1,
+        num_classes=10,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        align_corners=False,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+    auxiliary_head=dict(
+        type='FCNHead',
+        in_channels=1024,
+        in_index=2,
+        channels=256,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        num_classes=10,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        align_corners=False,
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+    train_cfg=dict(),
+    test_cfg=dict(mode='whole'))
+dataset_type = 'ADE20KDataset'
+data_root = '/home/csu/SegCompetition_station'
+img_norm_cfg = dict(
+    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+crop_size = (512, 512)
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='Resize', img_scale=(2048, 512), ratio_range=(0.5, 2.0)),
+    dict(type='RandomCrop', crop_size=(512, 512), cat_max_ratio=0.75),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(
+        type='Normalize',
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
+        to_rgb=True),
+    dict(type='Pad', size=(512, 512), pad_val=0, seg_pad_val=255),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img', 'gt_semantic_seg'])
+]
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(2048, 512),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(
+                type='Normalize',
+                mean=[123.675, 116.28, 103.53],
+                std=[58.395, 57.12, 57.375],
+                to_rgb=True),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img'])
+        ])
+]
+data = dict(
+    samples_per_gpu=4,
+    workers_per_gpu=4,
+    train=dict(
+        type='ADE20KDataset',
+        data_root='/home/csu/SegCompetition_station',
+        img_dir='images/training',
+        ann_dir='annotations/training',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', reduce_zero_label=True),
+            dict(type='Resize', img_scale=(2048, 512), ratio_range=(0.5, 2.0)),
+            dict(type='RandomCrop', crop_size=(512, 512), cat_max_ratio=0.75),
+            dict(type='RandomFlip', prob=0.5),
+            dict(type='PhotoMetricDistortion'),
+            dict(
+                type='Normalize',
+                mean=[123.675, 116.28, 103.53],
+                std=[58.395, 57.12, 57.375],
+                to_rgb=True),
+            dict(type='Pad', size=(512, 512), pad_val=0, seg_pad_val=255),
+            dict(type='DefaultFormatBundle'),
+            dict(type='Collect', keys=['img', 'gt_semantic_seg'])
+        ]),
+    val=dict(
+        type='ADE20KDataset',
+        data_root='/home/csu/SegCompetition_station',
+        img_dir='images/validation',
+        ann_dir='annotations/validation',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(2048, 512),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='Normalize',
+                        mean=[123.675, 116.28, 103.53],
+                        std=[58.395, 57.12, 57.375],
+                        to_rgb=True),
+                    dict(type='ImageToTensor', keys=['img']),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]),
+    test=dict(
+        type='ADE20KDataset',
+        data_root='/home/csu/SegCompetition_station',
+        img_dir='images/validation',
+        ann_dir='annotations/validation',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(2048, 512),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='Normalize',
+                        mean=[123.675, 116.28, 103.53],
+                        std=[58.395, 57.12, 57.375],
+                        to_rgb=True),
+                    dict(type='ImageToTensor', keys=['img']),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]))
+log_config = dict(
+    interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
+dist_params = dict(backend='nccl')
+log_level = 'INFO'
+load_from = None
+resume_from = None
+workflow = [('train', 0)]
+cudnn_benchmark = True
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+optimizer_config = dict()
+lr_config = dict(policy='poly', power=0.9, min_lr=0.0001, by_epoch=False)
+runner = dict(type='IterBasedRunner', max_iters=160000)
+checkpoint_config = dict(by_epoch=False, interval=16000)
+evaluation = dict(interval=2, metric='mIoU')
+work_dir = '/home/csu/SegCompetition_station/logs'
+gpu_ids = range(0, 1)
+
+2021-07-26 15:28:59,508 - mmseg - INFO - initialize ResNetV1c with init_cfg {'type': 'Pretrained', 'checkpoint': 'open-mmlab://resnet50_v1c'}
+2021-07-26 15:28:59,623 - mmseg - INFO - initialize DepthwiseSeparableASPPHead with init_cfg {'type': 'Normal', 'std': 0.01, 'override': {'name': 'conv_seg'}}
+2021-07-26 15:28:59,735 - mmseg - INFO - initialize FCNHead with init_cfg {'type': 'Normal', 'std': 0.01, 'override': {'name': 'conv_seg'}}
+Name of parameter - Initialization information
+backbone.stem.0.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.4.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.4.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.6.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.7.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.stem.7.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.downsample.0.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.downsample.1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.0.downsample.1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.1.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer1.2.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.downsample.0.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.downsample.1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.0.downsample.1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.1.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.2.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer2.3.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.downsample.0.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.downsample.1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.0.downsample.1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.1.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.2.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.3.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.4.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer3.5.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.downsample.0.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.downsample.1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.0.downsample.1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.1.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.conv1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn1.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn1.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.conv2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn2.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn2.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.conv3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn3.weight - PretrainedInit: load from open-mmlab://resnet50_v1c 
+backbone.layer4.2.bn3.bias - PretrainedInit: load from open-mmlab://resnet50_v1c 
+decode_head.conv_seg.weight - NormalInit: mean=0, std=0.01, bias=0 
+decode_head.conv_seg.bias - NormalInit: mean=0, std=0.01, bias=0 
+decode_head.image_pool.1.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.image_pool.1.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.image_pool.1.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.0.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.0.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.0.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.depthwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.depthwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.depthwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.pointwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.pointwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.1.pointwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.depthwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.depthwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.depthwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.pointwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.pointwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.2.pointwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.depthwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.depthwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.depthwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.pointwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.pointwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.aspp_modules.3.pointwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.bottleneck.conv.weight - Initialized by user-defined `init_weights` in ConvModule  
+decode_head.bottleneck.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.bottleneck.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.c1_bottleneck.conv.weight - Initialized by user-defined `init_weights` in ConvModule  
+decode_head.c1_bottleneck.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.c1_bottleneck.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.depthwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.depthwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.depthwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.pointwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.pointwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.0.pointwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.depthwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.depthwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.depthwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.pointwise_conv.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.pointwise_conv.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+decode_head.sep_bottleneck.1.pointwise_conv.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+auxiliary_head.conv_seg.weight - NormalInit: mean=0, std=0.01, bias=0 
+auxiliary_head.conv_seg.bias - NormalInit: mean=0, std=0.01, bias=0 
+auxiliary_head.convs.0.conv.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+auxiliary_head.convs.0.bn.weight - The value is the same before and after calling `init_weights` of EncoderDecoder  
+auxiliary_head.convs.0.bn.bias - The value is the same before and after calling `init_weights` of EncoderDecoder  
+2021-07-26 15:28:59,737 - mmseg - INFO - EncoderDecoder(
+  (backbone): ResNetV1c(
+    (stem): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU(inplace=True)
+      (3): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (4): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU(inplace=True)
+      (6): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (8): ReLU(inplace=True)
+    )
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): ResLayer(
+      (0): Bottleneck(
+        (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer2): ResLayer(
+      (0): Bottleneck(
+        (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer3): ResLayer(
+      (0): Bottleneck(
+        (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (4): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (5): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer4): ResLayer(
+      (0): Bottleneck(
+        (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+  )
+  init_cfg={'type': 'Pretrained', 'checkpoint': 'open-mmlab://resnet50_v1c'}
+  (decode_head): DepthwiseSeparableASPPHead(
+    input_transform=None, ignore_index=255, align_corners=False
+    (loss_decode): CrossEntropyLoss()
+    (conv_seg): Conv2d(512, 10, kernel_size=(1, 1), stride=(1, 1))
+    (dropout): Dropout2d(p=0.1, inplace=False)
+    (image_pool): Sequential(
+      (0): AdaptiveAvgPool2d(output_size=1)
+      (1): ConvModule(
+        (conv): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+    (aspp_modules): DepthwiseSeparableASPPModule(
+      (0): ConvModule(
+        (conv): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activate): ReLU(inplace=True)
+      )
+      (1): DepthwiseSeparableConvModule(
+        (depthwise_conv): ConvModule(
+          (conv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(12, 12), dilation=(12, 12), groups=2048, bias=False)
+          (bn): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+        (pointwise_conv): ConvModule(
+          (conv): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+      )
+      (2): DepthwiseSeparableConvModule(
+        (depthwise_conv): ConvModule(
+          (conv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(24, 24), dilation=(24, 24), groups=2048, bias=False)
+          (bn): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+        (pointwise_conv): ConvModule(
+          (conv): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+      )
+      (3): DepthwiseSeparableConvModule(
+        (depthwise_conv): ConvModule(
+          (conv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(36, 36), dilation=(36, 36), groups=2048, bias=False)
+          (bn): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+        (pointwise_conv): ConvModule(
+          (conv): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+      )
+    )
+    (bottleneck): ConvModule(
+      (conv): Conv2d(2560, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (activate): ReLU(inplace=True)
+    )
+    (c1_bottleneck): ConvModule(
+      (conv): Conv2d(256, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (activate): ReLU(inplace=True)
+    )
+    (sep_bottleneck): Sequential(
+      (0): DepthwiseSeparableConvModule(
+        (depthwise_conv): ConvModule(
+          (conv): Conv2d(560, 560, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=560, bias=False)
+          (bn): BatchNorm2d(560, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+        (pointwise_conv): ConvModule(
+          (conv): Conv2d(560, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+      )
+      (1): DepthwiseSeparableConvModule(
+        (depthwise_conv): ConvModule(
+          (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512, bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+        (pointwise_conv): ConvModule(
+          (conv): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activate): ReLU(inplace=True)
+        )
+      )
+    )
+  )
+  init_cfg={'type': 'Normal', 'std': 0.01, 'override': {'name': 'conv_seg'}}
+  (auxiliary_head): FCNHead(
+    input_transform=None, ignore_index=255, align_corners=False
+    (loss_decode): CrossEntropyLoss()
+    (conv_seg): Conv2d(256, 10, kernel_size=(1, 1), stride=(1, 1))
+    (dropout): Dropout2d(p=0.1, inplace=False)
+    (convs): Sequential(
+      (0): ConvModule(
+        (conv): Conv2d(1024, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+  )
+  init_cfg={'type': 'Normal', 'std': 0.01, 'override': {'name': 'conv_seg'}}
+)
+2021-07-26 15:28:59,923 - mmseg - INFO - Loaded 16051 images
+2021-07-26 15:29:00,668 - mmseg - INFO - Loaded 3815 images
+2021-07-26 15:29:00,669 - mmseg - INFO - Start running, host: csu@csu-Super-Server, work_dir: /home/csu/SegCompetition_station/logs
+2021-07-26 15:29:00,669 - mmseg - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) PolyLrUpdaterHook                  
+(NORMAL      ) CheckpointHook                     
+(NORMAL      ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) PolyLrUpdaterHook                  
+(NORMAL      ) EvalHook                           
+(LOW         ) IterTimerHook                      
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) PolyLrUpdaterHook                  
+(NORMAL      ) EvalHook                           
+(LOW         ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(ABOVE_NORMAL) OptimizerHook                      
+(NORMAL      ) CheckpointHook                     
+(NORMAL      ) EvalHook                           
+(LOW         ) IterTimerHook                      
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) CheckpointHook                     
+(NORMAL      ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_val_epoch:
+(LOW         ) IterTimerHook                      
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_val_iter:
+(LOW         ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(LOW         ) IterTimerHook                      
+ -------------------- 
+after_val_epoch:
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+2021-07-26 15:29:00,669 - mmseg - INFO - workflow: [('train', 0)], max: 160000 iters
